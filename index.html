@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<title>ImDb</title>
+<script src="public/js/underscore-min.js"></script>
+<script src="public/js/jquery.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/bootstrap.min.js"></script>
+<link rel="stylesheet" href="public/bootstrap/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url(public/728.gif) center no-repeat #fff;
+}
+</style>
+</head>
+<body>
+        <nav class="navbar navbar-default navbar-lower affix-top" role="navigation">
+            <div class="container">
+                <form class="navbar-form navbar-left form-inline" role="search" id="myform">
+                        <img style="height:34px;width:60px;" src="public/imdblogo.png">
+                        <input type="text" class="form-control" style="width:400px;" placeholder="Enter Keyword to search" id="keyword">
+			
+                        <input type="button" class="btn btn-default" id="search" value="Search">
+                </form>
+                
+            </div>
+        </nav>
+        <!--frameset cols="25%,*,25%">
+            <frame src="1.html">
+            <frame src="it.html">
+            <frame src="it.html">
+        </frameset-->
+        
+<div class="row-fluid">
+   <div id="left" class="col-sm-3">
+     <div class= "col-sm-12"> 
+   <ul class="list-group" id="flist"></ul>
+   </div>
+</div>
+  <div id="right" class="col-sm-9">
+    <!--Body content--><div id="results" style="overflow:auto;">  
+
+      </div>
+<div class="se-pre-con"></div>
+  </div>
+ </div>
+
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted credit"></a></p>
+            </div>
+        </div>
+
+
+<script>
+$(function(){
+ $('#search').on('click', function(e){
+    $(".se-pre-con").fadeIn("slow");
+    //alert("clicked");
+     var parameters ={ keyword :$("#keyword").val()};
+     
+       $.get( '/searching',parameters, function(data) {
+        //alert(_.pluck(data,"name"));
+       //$('#results').html(_.pluck(data,"name"));
+var resp= '<ul class="list-group" id="flist">';
+_.each(data, function(bd) {
+   //alert(bd.name);
+   resp+='<img style="height:40px; width:60px;" src="'+bd.imgurl+'" class="col-sm-3"><li class="list-group-item col-sm-9" data-src="'+bd.url+'"><a >'+bd.name+'</a></li>';
+});
+resp+="</li>";
+ $('#flist').replaceWith(resp);
+     });
+      $(".se-pre-con").fadeOut("slow");
+ });
+
+
+$(document).on("click", "li", function() {
+    $(".se-pre-con").fadeIn("slow");
+  var link={ link: $(this).attr('data-src'),title: $(this).text()};
+//alert(link);
+$.get('/getcontent',link, function(data){
+   // alert(data.name);
+
+    var resp='<div id="results" style="overflow:auto;">';
+    if(data.img!=undefined){
+        resp+=' <div class="col-sm-4"> <img src='+data.img+'"></div>';
+    }
+    resp+='<div class="col-sm-8" style="font-size:18;word-wrap: break-word;">';
+    if(data.name!=''){
+        resp+='<h1>'+data.name+'</h1>';
+    }
+     if(data.summary!=''){
+        resp+='<span>'+data.summary+'</span><br><br>';
+    }
+    if(data.born!=''){
+        resp+='<span>'+data.born+'</span><br><br>';
+    }
+    if(data.director!=''){
+        resp+='<span><b>Director: </b>'+data.director+'</span><br><br>';
+    }
+   if(data.rating!=''){
+        resp+='<span><b>Rating: </b><span style="color:green;">'+data.rating+'</span></span><br><br>';
+    }
+   if(data.time!=''){
+        resp+='<span><b>Duration: </b>'+data.time+'</span>';
+  }
+        resp+='</div></div>';
+   //alert(data.born);
+$('#results').replaceWith(resp);
+$(".se-pre-con").fadeOut("slow");
+});
+
+});
+
+});
+
+
+//paste this code under head tag or in a seperate js file.
+    // Wait for window load
+    $(window).load(function() {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");
+    });
+
+</script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+</body>
+</html>

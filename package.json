@@ -1,0 +1,13 @@
+{
+  "name": "imdbscraping",
+  "version": "0.0.1",
+  "description": "imdbscraping",
+   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "~4.13.4","socket.io": "~1.4.5","mongoose":"~4.4.2","cheerio":"0.20.0","request":"2.69.0",
+    "mongodb":"~2.1.7"
+  }
+}

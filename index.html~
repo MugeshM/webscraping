@@ -1,0 +1,41 @@
+<html>
+<head>
+<script src="public/js/jquery.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/bootstrap.min.js"></script>
+<link rel="stylesheet" href="public/bootstrap/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+        <nav class="navbar navbar-default navbar-lower affix-top" role="navigation">
+            <div class="container">
+                <form class="navbar-form navbar-left form-inline" role="search">
+                        <img style="height:40px;width:60px;" src="public/imdblogo.png">
+                        <input type="text" class="form-control" style="width:400px;" placeholder="Enter Keyword to search">
+			
+                        <button class="btn btn-default">Search</button>
+                    </form>
+                
+            </div>
+        </nav>
+        <frameset cols="25%,*,25%">
+            <frame src="1.html">
+            <frame src="it.html">
+            <frame src="it.html">
+        </frameset>
+ <div class="row-fluid">
+   <div id="left" class="col-sm-4" style="background-color:blue;">
+     <div id="allYourContent" class= "col-sm-12">dfdsfdsfdsfsd
+    </div>
+     </div>
+  <div id="right" class="col-sm-8"  style="background-color:green;">
+    <!--Body content-->cvsfdscscdddvdfsdf
+  </div>
+ </div>
+</div>
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted credit"></a></p>
+            </div>
+        </div>
+    </body>
+</html>

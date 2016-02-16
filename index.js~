@@ -1,0 +1,81 @@
+/*var express = require('express'),
+	app = express(),
+	server = require('http').createServer(app),
+	io = require('socket.io').listen(server),
+	mongoose = require('mongoose');
+app.use('/public', express.static(__dirname + '/public'));
+
+var port = process.env.PORT || 3000;
+server.listen(port);
+
+app.get('/', function(req, res){
+	res.sendFile(__dirname + '/index.html');
+});
+
+
+mongoose.connect('mongodb://localhost/location', function(err){
+	if(err){
+		console.log(err);
+	} else{
+		console.log('Connected to mongodb!');
+	}
+});
+
+var locationSchema = mongoose.Schema({
+	name: String,
+	mylat: String,
+        mylon: String,
+	trackedon: {type: Date, default: Date.now}
+});
+
+var Location = mongoose.model('Location', locationSchema);
+
+io.sockets.on('connection', function(socket){
+	socket.on('mylocation', function(data){
+console.log(data);
+
+var query = Location.update({ name: data.name }, {mylat: data.mylat, mylon: data.mylon}, { upsert : true });
+query.exec();
+
+});
+
+socket.on('getfriendloc', function(data, callback){
+		console.log("fetching "+data+"'s location");
+		if(data == ''){
+			callback('Error!  Enter your friend name.');
+		} else{
+	var query = Location.find({"name":data});
+	query.exec(function(err, docs){
+		if(err) throw err;
+   console.log(docs);
+		socket.emit('friendloc', docs);
+	});
+
+	}
+	});
+
+});*/
+var request = require('request');
+var cheerio = require('cheerio');
+
+var url = "http://www.imdb.com/find?q=batman";
+var findlist = [];
+  request({
+            "uri": url
+        }, function(err, resp, body){
+		  var $ = cheerio.load(body);
+		  
+		  var strContent = "";
+          $('.findList').find('tr').each(function(index,item){
+
+           if(index>=0)
+           {
+              var tds = $(item).find('td');
+              strContent += $(tds.eq(1)).text().trim() + "," 
+			  + tds.eq(0).find('img').attr('src').trim() +","+ $(tds.eq(1)).find('a').attr('href').trim()+"\r\n";
+findlist.push({ "name":$(tds.eq(1)).text().trim(), "url":"http://www.imdb.com"+$(tds.eq(1)).find('a').attr('href').trim(),"imgurl":tds.eq(0).find('img').attr('src').trim()});
+           }
+           });
+	console.log(findlist);
+           console.log(strContent);
+		}); 
